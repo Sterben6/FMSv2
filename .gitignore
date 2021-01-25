@@ -1,0 +1,13 @@
+# Package Management & Libraries
+node_modules
+package-lock.json
+
+# Configuration Files
+config.json
+configs/config.yaml
+src/config.yaml
+.vscode
+.idea
+
+# Build/Distribution Files
+dist
