@@ -213,6 +213,23 @@ export default class Util {
         return departments
     }
 
+    public splitString(string: string, length: number): string[] {
+        if (!string) return [];
+        if (Array.isArray(string)) string = string.join('\n');
+        if (string.length <= length) return [string];
+        const arrayString: string[] = [];
+        let str: string = '';
+        let pos: number;
+        while (string.length > 0) {
+            pos = string.length > length ? string.lastIndexOf('\n', length) : string.length;
+            if (pos > length) pos = length;
+            str = string.substr(0, pos);
+            string = string.substr(pos);
+            arrayString.push(str);
+        }
+        return arrayString;
+    }
+
     public globalRoleList = [
         `754058117544935474`, // DEA
         `754058149287297154`, // ScD
