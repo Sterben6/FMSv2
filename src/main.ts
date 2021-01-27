@@ -23,6 +23,18 @@ async function main(): Promise<void> {
             reconnect: true
         });
     })
+
+    client.on('error', async function(err) {
+        client.util.signale.error(err)
+    })
+
+    process.on(`uncaughtException`, (err) => {
+        client.util.signale.error(err)
+    })
+
+    process.on(`unhandledRejection`, (err) => {
+        client.util.signale.error(err)
+    })
 }
 
 main();
