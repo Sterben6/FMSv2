@@ -19,7 +19,9 @@ async function main(): Promise<void> {
     await client.connect();
 
     client.shards.get(0).on(`disconnect`, async function() {
-        await this.client.shards.get(0).connect();
+        await this.client.shards.get(0).disconnect({
+            reconnect: true
+        });
     })
 }
 
