@@ -5,7 +5,11 @@ import mongoose from 'mongoose';
 import { Collection, Command, Event, Util } from '.';
 
 import {
-    User, UserInterface
+    Application, ApplicationInterface,
+    Ban, BanInterface,
+    Note, NoteInterface,
+    User, UserInterface,
+    Suspension, SuspensionInterface,
 } from '../models';
 
 pluris(eris)
@@ -17,7 +21,13 @@ export default class Client extends eris.Client {
 
     public events: Collection<Event>;
 
-    public db: { User: mongoose.Model<UserInterface>}
+    public db: {
+        Application: mongoose.Model<ApplicationInterface>
+        Ban: mongoose.Model<BanInterface>,
+        Note: mongoose.Model<NoteInterface>
+        User: mongoose.Model<UserInterface>,
+        Suspension: mongoose.Model<SuspensionInterface>,
+    }
 
     public intervals: Collection<NodeJS.Timeout>;
 
@@ -29,7 +39,13 @@ export default class Client extends eris.Client {
         super(token, options);
         this.commands = new Collection<Command>();
         this.events = new Collection<Event>();
-        this.db = { User }
+        this.db = {
+            Application,
+            Ban,
+            Note,
+            User,
+            Suspension
+        }
         this.intervals = new Collection<NodeJS.Timeout>();
         // this.server = new Server(this)
         this.util = new Util(this);
@@ -37,7 +53,11 @@ export default class Client extends eris.Client {
     }
 
     public async connectDb() {
-        await mongoose.connect(this.config.mongoDB, { useNewUrlParser: true, useUnifiedTopology: true, poolSize: 50 });
+        await mongoose.connect(this.config.mongoDB,{
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            poolSize: 50
+        });
     }
 
     public async loadCommands(commandFiles) {
