@@ -106,12 +106,14 @@ export default class Util {
             return
         }
 
-        for (const dept of departments) {
-            if (dept === "Ethics Committee") rolesToHave.push(await member.guild.roles.get(`754058074830143499`))
-            else if (dept === "Engineering & Technical Services") rolesToHave.push(await member.guild.roles.get(`754058219730632835`))
-            else if (dept === "Department of External Affairs") rolesToHave.push(await member.guild.roles.get(`754058117544935474`))
-            else if (dept === "Scientific Department") rolesToHave.push(await member.guild.roles.get(`754058149287297154`))
-            else if (dept === "Security Corps") rolesToHave.push(await member.guild.roles.get(`754058039635607573`))
+        if (departments.length > 0) {
+            for (const dept of departments) {
+                if (dept === "Ethics Committee") rolesToHave.push(await member.guild.roles.get(`754058074830143499`))
+                else if (dept === "Engineering & Technical Services") rolesToHave.push(await member.guild.roles.get(`754058219730632835`))
+                else if (dept === "Department of External Affairs") rolesToHave.push(await member.guild.roles.get(`754058117544935474`))
+                else if (dept === "Scientific Department") rolesToHave.push(await member.guild.roles.get(`754058149287297154`))
+                else if (dept === "Security Corps") rolesToHave.push(await member.guild.roles.get(`754058039635607573`))
+            }
         }
 
         let rolesAdded: string[] = []
