@@ -87,7 +87,12 @@ export default class Util {
 
     public async update(member, message?) {
         const check = await this.client.db.User.findOne({ discordId: member.id });
-        const departments = await this.getDepartments(check.robloxId)
+        let departments;
+         try {
+            departments = await this.getDepartments(check.robloxId)
+        } catch (e) {
+
+         }
         let rolesToHave: Role[] = []
         let rolesToNotHave = this.globalRoleList
         if (!check) {
