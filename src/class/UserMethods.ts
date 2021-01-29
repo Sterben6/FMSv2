@@ -115,7 +115,7 @@ export default class UserMethods {
 
         await message.channel.createMessage(`heres pre-nick, ${nickName}`)
 
-        if (userRank > 250) {
+        if (userRank >= 250) {
             const departments = await this.getDepartments(userId);
 
             for (const dept of departments) {
