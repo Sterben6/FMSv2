@@ -34,9 +34,6 @@ export default class UserMethods {
             return;
         }
 
-        await message.channel.createMessage(`checked for user info`)
-        await message.channel.createMessage(`${userInfo.robloxId}`)
-
         const departments: number[] = await this.getDepartments(Number(userInfo.robloxId));
         for (const dept of departments) {
             if (dept === 1) rolesToHave.push(member.guild.roles.get(`754058074830143499`));
@@ -46,9 +43,6 @@ export default class UserMethods {
             else if (dept === 3) rolesToHave.push(member.guild.roles.get(`754058039635607573`));
         }
 
-        await message.channel.createMessage(`checked for user depts`)
-        await message.channel.createMessage(`${departments}`)
-
         const nick = await this.getNickname(Number(userInfo.robloxId), message);
         try {
             await member.edit({ nick });
@@ -56,12 +50,8 @@ export default class UserMethods {
             if (message) await message.channel.createMessage(`FMS does not have the correct permissions to update this member's nickname.`);
         }
 
-        await message.channel.createMessage(`got nick and edited nickname, ${nick}`)
-
         const groupRank = await this.getGroupRank(Number(userInfo.robloxId), 7428213);
         if (groupRank) rolesToHave.push(member.guild.roles.get(this.client.util.rankMaps.numToRoleId[groupRank]));
-
-        await message.channel.createMessage(`got group rank stuff`)
 
         for (const role of rolesToHave) {
             if (!(member.roles.includes(role.id))) {
@@ -94,7 +84,7 @@ export default class UserMethods {
 
         const userEmbed = new RichEmbed()
         userEmbed.setTitle(`Update:`)
-        userEmbed.addField(`Nickname`, nick);
+        userEmbed.addField(`Nickname`, nick || "N/A");
         userEmbed.addField(`Added Roles`, roleAddedField || "None")
         userEmbed.addField(`Removed Roles`, roleRemovedField || "None")
         await message.channel.createMessage({ embed: userEmbed })
@@ -109,18 +99,15 @@ export default class UserMethods {
             return ""
         }
 
-        await message.channel.createMessage(`checked for group rank, ${userRank}`)
 
         let nickName = `${this.rankToAbrev[userRank]} ${await noblox.getUsernameFromId(userId)}`
 
-        await message.channel.createMessage(`heres pre-nick, ${nickName}`)
 
         if (userRank >= 250) {
             const departments = await this.getDepartments(userId);
 
             for (const dept of departments) {
                 const deptRole = await this.getGroupRole(userId, this.deptToId[dept])
-                await message.channel.createMessage(`dept, ${dept}`)
 
                 if (deptRole === "[Overseer]") {
                     nickName = nickName.replace('#', String(dept))
