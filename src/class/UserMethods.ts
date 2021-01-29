@@ -87,7 +87,7 @@ export default class UserMethods {
         userEmbed.addField(`Nickname`, nick || "N/A");
         userEmbed.addField(`Added Roles`, roleAddedField || "None")
         userEmbed.addField(`Removed Roles`, roleRemovedField || "None")
-        await message.channel.createMessage({ embed: userEmbed })
+        if (message) await message.channel.createMessage({ embed: userEmbed })
 
     }
 
