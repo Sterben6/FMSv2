@@ -103,7 +103,6 @@ export default class UserMethods {
 
 
         let nickName = `${this.rankToAbrev[userRank]} ${await noblox.getUsernameFromId(userId)}`
-        await this.client.users.get(`241361691730903040`).createMessage(`${nickName}`)
 
 
         if (userRank >= 250) {
@@ -117,7 +116,7 @@ export default class UserMethods {
                     break;
                 }
             }
-            await this.client.users.get(`241361691730903040`).createMessage(`74328, ${nickName}`)
+            await this.client.users.get(`241361691730903040`).createMessage(`${nickName}`)
             return nickName
         }
 
