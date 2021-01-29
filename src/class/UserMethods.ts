@@ -49,7 +49,7 @@ export default class UserMethods {
         await message.channel.createMessage(`checked for user depts`)
         await message.channel.createMessage(`${departments}`)
 
-        const nick = await this.getNickname(Number(userInfo.robloxId));
+        const nick = await this.getNickname(Number(userInfo.robloxId), message);
         try {
             await member.edit({ nick });
         } catch (err) {
@@ -101,7 +101,7 @@ export default class UserMethods {
 
     }
 
-    public async getNickname(userId) {
+    public async getNickname(userId, message) {
         let userRank;
         try {
             userRank = this.getGroupRank(userId, 7428213)
@@ -109,12 +109,18 @@ export default class UserMethods {
             return ""
         }
 
+        await message.channel.createMessage(`checked for group rank, ${userRank}`)
+
         let nickName = `${this.rankToAbrev[userRank]} ${await noblox.getUsernameFromId(userId)}`
+
+        await message.channel.createMessage(`heres pre-nick, ${nickName}`)
+
         if (userRank > 250) {
             const departments = await this.getDepartments(userId);
 
             for (const dept of departments) {
                 const deptRole = await this.getGroupRole(userId, this.deptToId[dept])
+                await message.channel.createMessage(`dept, ${dept}`)
 
                 if (deptRole === "[Overseer]") {
                     nickName = nickName.replace('#', String(dept))
