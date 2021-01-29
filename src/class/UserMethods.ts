@@ -104,7 +104,7 @@ export default class UserMethods {
     public async getNickname(userId, message) {
         let userRank;
         try {
-            userRank = this.getGroupRank(userId, 7428213)
+            userRank = await this.getGroupRank(userId, 7428213)
         } catch (error) {
             return ""
         }
