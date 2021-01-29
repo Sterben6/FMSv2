@@ -1,5 +1,5 @@
-import { Client, Command, RichEmbed, Collection } from '../class';
-import { Message, Member } from 'eris';
+import { Client, Command } from '../class';
+import { Message } from 'eris';
 
 export default class updateall extends Command {
     constructor(client: Client) {
@@ -15,8 +15,7 @@ export default class updateall extends Command {
         await message.channel.createMessage(`Updating...`)
         const guildMembers = message.guild.members;
         for (const member in guildMembers) {
-            // @ts-ignore
-            await this.client.util.update(member)
+            await this.client.util.userMethods.update(message.guild.members.get(member))
         }
 
         await message.channel.createMessage(`Updated all users in the server.`)

@@ -1,7 +1,5 @@
-import { Client, Command, RichEmbed, Collection } from '../class';
-import { Message, Member, Role } from 'eris';
-import axios from "axios";
-import noblox from "noblox.js";
+import { Client, Command } from '../class';
+import { Message, Member } from 'eris';
 
 export default class update extends Command {
 
@@ -32,6 +30,6 @@ export default class update extends Command {
         const check = await this.client.db.User.findOne({ discordId: message.member.id });
         if (!check) return await channel.createMessage(`\`${member.username}#${member.discriminator}\` is not verified.`)
 
-        await this.client.util.update(member, message)
+        await this.client.util.userMethods.update(member, message)
     }
 }

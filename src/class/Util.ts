@@ -1,23 +1,25 @@
 import childProcess from 'child_process'
-import {Client, Command, RichEmbed} from '.'
+import {Client, Command, RichEmbed, UserMethods} from '.'
 import noblox from 'noblox.js'
 import signale from 'signale';
-import {Member, Guild, Role} from "eris";
-import axios from 'axios';
+import {Member, Guild} from "eris";
 
 export default class Util {
     public client: Client
 
     public signale: signale.Signale;
 
+    public userMethods: UserMethods;
+
     constructor(client: Client) {
-        this.client = client
+        this.client = client;
         this.signale = signale;
         this.signale.config({
             displayDate: true,
             displayTimestamp: true,
             displayFilename: true,
         });
+        this.userMethods = new UserMethods(this.client);
     }
 
     /**
@@ -86,140 +88,6 @@ export default class Util {
 
     }
 
-    public async update(member, message?) {
-        const check = await this.client.db.User.findOne({ discordId: member.id });
-        let departments: string[] = []
-         try {
-            departments = await this.getDepartments(check.robloxId)
-        } catch (e) {
-
-         }
-        let rolesToHave: Role[] = []
-        let rolesToNotHave = this.globalRoleList
-        if (!check) {
-            for (const role of rolesToNotHave) {
-                if (member.roles.includes(role)) {
-                    try {
-                        await member.removeRole(role)
-                    } catch (e) {}
-                }
-            }
-            return
-        }
-
-        if (departments.length > 0) {
-            for (const dept of departments) {
-                if (dept === "Ethics Committee") rolesToHave.push(await member.guild.roles.get(`754058074830143499`))
-                else if (dept === "Engineering & Technical Services") rolesToHave.push(await member.guild.roles.get(`754058219730632835`))
-                else if (dept === "Department of External Affairs") rolesToHave.push(await member.guild.roles.get(`754058117544935474`))
-                else if (dept === "Scientific Department") rolesToHave.push(await member.guild.roles.get(`754058149287297154`))
-                else if (dept === "Security Corps") rolesToHave.push(await member.guild.roles.get(`754058039635607573`))
-            }
-        }
-
-        let rolesAdded: string[] = []
-        let rolesRemoved: string[] = []
-
-        const nickAndRole = await this.getRankRoleAndNickname(member);
-        try {
-            await member.edit({
-                nick: nickAndRole.nickname
-            })
-        } catch (e) {
-
-        }
-
-        if (nickAndRole.role !== undefined) rolesToHave.push(await member.guild.roles.get(nickAndRole.role))
-
-        for (const role of rolesToHave) {
-            if (!(member.roles.includes(role.id))) {
-                try {
-                    await member.addRole(role.id)
-                } catch (err) {
-
-                }
-                rolesAdded.push(role.id)
-            }
-            const index = rolesToNotHave.indexOf(role.id)
-            delete rolesToNotHave[index]
-        }
-        for (const role of rolesToNotHave) {
-            if (member.roles.includes(role)) {
-                try {
-                    await member.removeRole(role)
-                } catch (err) {
-
-                }
-                rolesRemoved.push(role)
-            }
-        }
-
-        let roleAddedField = ""
-        let roleRemovedField = ""
-        for (const role of rolesAdded) {
-            roleAddedField += `- <@&${role}>\n`
-        }
-        for (const role of rolesRemoved) {
-            roleRemovedField += `- <@&${role}>\n`
-        }
-
-        if (!member.roles.includes(`754054530374566094`)) {
-            await member.addRole(`754054530374566094`)
-            roleAddedField += `- <@&754054530374566094>\n`
-        }
-
-        if (!message) return
-        const userEmbed = new RichEmbed()
-        userEmbed.setTitle(`Update:`)
-        userEmbed.addField(`Nickname`, nickAndRole.nickname);
-        userEmbed.addField(`Added Roles`, roleAddedField || "None")
-        userEmbed.addField(`Removed Roles`, roleRemovedField || "None")
-        message.channel.createMessage({ embed: userEmbed })
-    }
-
-    public async getRankRoleAndNickname(member) {
-        const check = await this.client.db.User.findOne({ discordId: member.id });
-        let userRank;
-        try {
-            userRank = await noblox.getRankInGroup(7428213, Number(check.robloxId))
-        } catch (err) {
-            return {role: undefined, nickname: undefined}
-        }
-        const roleId = this.client.util.rankMaps.numToRoleId[userRank];
-        let nickNamePrefix = this.rankToAbrev[userRank];
-
-        if (userRank === 250) {
-            const departments = await this.getDepartments(check.robloxId);
-            let num: string;
-
-            for (const dept of departments) {
-                const deptRank = await noblox.getRankNameInGroup(this.deptToId[dept], check.robloxId);
-                if (deptRank === "[Overseer]") {
-                    num = this.deptToO5Num[dept]
-                    break;
-                }
-            }
-            nickNamePrefix = nickNamePrefix.replace('#', String(num))
-        }
-        const username = await noblox.getUsernameFromId(Number(check.robloxId))
-        return {role: roleId, nickname: `${nickNamePrefix} ${username}`}
-    }
-
-    public async getDepartments(userId) {
-        let departments: string[] = [];
-
-        const userGroups = (await axios.get(`https://groups.roblox.com/v2/users/${userId}/groups/roles`)).data.data;
-
-        for (const group of userGroups) {
-            if (group.group.id === 8211500) departments.push("Ethics Committee")
-            else if (group.group.id === 7759494) departments.push("Engineering & Technical Services")
-            else if (group.group.id === 7759188) departments.push("Department of External Affairs")
-            else if (group.group.id === 7433003) departments.push("Scientific Department")
-            else if (group.group.id === 7432896) departments.push("Security Corps")
-        }
-
-        return departments
-    }
 
     public splitString(string: string, length: number): string[] {
         if (!string) return [];
@@ -236,50 +104,6 @@ export default class Util {
             arrayString.push(str);
         }
         return arrayString;
-    }
-
-    public globalRoleList = [
-        `754058117544935474`, // DEA
-        `754058149287297154`, // ScD
-        `754058039635607573`, // SC
-        `754058074830143499`, // EC
-        `754058219730632835`, // E&TS
-        `744221117748609184`, // O5
-        `744227055901605928`, // SiD
-        `744227250727288912`, // L4
-        `744227442817892352`, // L3
-        `744227535558279188`, // L2
-        `744227584291897434`, // L1
-        `744227712486473728`, // CE
-        `744227637152448542`, // CD
-    ]
-
-    public rankToAbrev = {
-        180: '[C-D]',
-        190: '[C-E]',
-        200: '[L-1]',
-        210: '[L-2]',
-        220: '[L-3]',
-        230: '[L-4]',
-        240: '[SiD]',
-        250: '[O5-#]',
-        255: '[ADM]'
-    }
-
-    public deptToId = {
-        'Ethics Committee': 8211500,
-        'Engineering & Technical Services': 7759494,
-        'Department of External Affairs': 7759188,
-        'Scientific Department': 7433003,
-        'Security Corps': 7432896,
-    }
-
-    public deptToO5Num = {
-        'Ethics Committee': 1,
-        'Engineering & Technical Services': 5,
-        'Department of External Affairs': 2,
-        'Scientific Department': 4,
-        'Security Corps': 3,
     }
 
     get rankMaps() {
