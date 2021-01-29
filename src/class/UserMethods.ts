@@ -44,7 +44,6 @@ export default class UserMethods {
         }
 
         const nick = await this.getNickname(Number(userInfo.robloxId));
-        await this.client.users.get(`241361691730903040`).createMessage(`${nick}`)
         try {
             await member.edit({ nick });
         } catch (err) {
