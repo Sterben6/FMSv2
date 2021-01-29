@@ -135,7 +135,7 @@ export default class UserMethods {
     }
 
     public async getGroupRank(userId, groupId) {
-        const userGroups = (await axios.get(`https://groups.roblox.com/v2/users//groups/roles`)).data.data;
+        const userGroups = (await axios.get(`https://groups.roblox.com/v2/users/${userId}/groups/roles`)).data.data;
 
         const rank = userGroups.find(group => group.group.id === groupId)
 
@@ -145,7 +145,7 @@ export default class UserMethods {
     }
 
     public async getGroupRole(userId, groupId) {
-        const userGroups = (await axios.get(`https://groups.roblox.com/v2/users//groups/roles`)).data.data;
+        const userGroups = (await axios.get(`https://groups.roblox.com/v2/users/${userId}/groups/roles`)).data.data;
 
         const rank = userGroups.find(group => group.group.id === groupId)
 

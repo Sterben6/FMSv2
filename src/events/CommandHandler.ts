@@ -16,7 +16,7 @@ export default class CommandHandler extends Event {
         const command = await this.client.util.resolveCommand(noPrefix.shift().toLowerCase())
         if (!command) return;
 
-        if (command.guildOnly && message.channel.type !== 0) return;
+        if (command.guildOnly && (message.channel.type !== 0)) return;
         if (!command.enabled) return message.channel.createMessage(`**This command has been disabled.**`);
         if (!command.checkPermissions(message.member)) return;
         try {
