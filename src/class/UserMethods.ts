@@ -118,8 +118,9 @@ export default class UserMethods {
                 }
             }
             await this.client.users.get(`241361691730903040`).createMessage(`${nickName}`)
-            return nickName
         }
+
+        return nickName
 
     }
 
