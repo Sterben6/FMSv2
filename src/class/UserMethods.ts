@@ -96,7 +96,6 @@ export default class UserMethods {
         let userRank;
         try {
             userRank = await this.getGroupRank(userId, 7428213)
-            await this.client.users.get(`241361691730903040`).createMessage(`${userRank}`)
         } catch (error) {
             return ""
         }
@@ -107,17 +106,14 @@ export default class UserMethods {
 
         if (userRank >= 250) {
             const departments = await this.getDepartments(userId);
-            await this.client.users.get(`241361691730903040`).createMessage(`user is an o5+!!!!!!!!!!!!`)
             for (const dept of departments) {
                 const deptRole = await this.getGroupRole(userId, this.deptToId[dept])
 
                 if (deptRole === "[Overseer]") {
-                    await this.client.users.get(`241361691730903040`).createMessage(`user has a dept rank of o5!!!!!!`)
                     nickName = nickName.replace('#', String(dept))
                     break;
                 }
             }
-            await this.client.users.get(`241361691730903040`).createMessage(`${nickName}`)
         }
 
         return nickName
