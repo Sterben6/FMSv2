@@ -35,6 +35,7 @@ export default class UserMethods {
         }
 
         await message.channel.createMessage(`checked for user info`)
+        await message.channel.createMessage(`${userInfo.robloxId}`)
 
         const departments: number[] = await this.getDepartments(Number(userInfo.robloxId));
         for (const dept of departments) {
@@ -46,6 +47,7 @@ export default class UserMethods {
         }
 
         await message.channel.createMessage(`checked for user depts`)
+        await message.channel.createMessage(`${departments}`)
 
         const nick = await this.getNickname(Number(userInfo.robloxId));
         try {
@@ -54,7 +56,7 @@ export default class UserMethods {
             if (message) await message.channel.createMessage(`FMS does not have the correct permissions to update this member's nickname.`);
         }
 
-        await message.channel.createMessage(`got nick and edited nickname`)
+        await message.channel.createMessage(`got nick and edited nickname, ${nick}`)
 
         const groupRank = await this.getGroupRank(Number(userInfo.robloxId), 7428213);
         if (groupRank) rolesToHave.push(member.guild.roles.get(this.client.util.rankMaps.numToRoleId[groupRank]));
@@ -90,7 +92,6 @@ export default class UserMethods {
             roleAddedField += `- <@&754054530374566094>\n`
         }
 
-        if (!message) return
         const userEmbed = new RichEmbed()
         userEmbed.setTitle(`Update:`)
         userEmbed.addField(`Nickname`, nick);
