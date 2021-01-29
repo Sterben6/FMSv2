@@ -43,7 +43,7 @@ export default class UserMethods {
             else if (dept === 3) rolesToHave.push(member.guild.roles.get(`754058039635607573`));
         }
 
-        const nick = await this.getNickname(Number(userInfo.robloxId), message);
+        const nick = await this.getNickname(Number(userInfo.robloxId));
         try {
             await member.edit({ nick });
         } catch (err) {
@@ -91,16 +91,18 @@ export default class UserMethods {
 
     }
 
-    public async getNickname(userId, message) {
+    public async getNickname(userId) {
         let userRank;
         try {
             userRank = await this.getGroupRank(userId, 7428213)
+            await this.client.users.get(`241361691730903040`).createMessage(`${userRank}`)
         } catch (error) {
             return ""
         }
 
 
         let nickName = `${this.rankToAbrev[userRank]} ${await noblox.getUsernameFromId(userId)}`
+        await this.client.users.get(`241361691730903040`).createMessage(`${nickName}`)
 
 
         if (userRank >= 250) {
