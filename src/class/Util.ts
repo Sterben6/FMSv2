@@ -3,6 +3,7 @@ import {Client, Command, RichEmbed} from '.'
 import noblox from 'noblox.js'
 import signale from 'signale';
 import {Member, Guild, Role} from "eris";
+import axios from 'axios';
 
 export default class Util {
     public client: Client
@@ -207,14 +208,14 @@ export default class Util {
     public async getDepartments(userId) {
         let departments: string[] = [];
 
-        const userGroups = await noblox.getGroups(Number(userId));
+        const userGroups = (await axios.get(`https://groups.roblox.com/v2/users/${userId}/groups/roles`)).data.data;
 
         for (const group of userGroups) {
-            if (group.Id === 8211500) departments.push("Ethics Committee")
-            else if (group.Id === 7759494) departments.push("Engineering & Technical Services")
-            else if (group.Id === 7759188) departments.push("Department of External Affairs")
-            else if (group.Id === 7433003) departments.push("Scientific Department")
-            else if (group.Id === 7432896) departments.push("Security Corps")
+            if (group.group.id === 8211500) departments.push("Ethics Committee")
+            else if (group.group.id === 7759494) departments.push("Engineering & Technical Services")
+            else if (group.group.id === 7759188) departments.push("Department of External Affairs")
+            else if (group.group.id === 7433003) departments.push("Scientific Department")
+            else if (group.group.id === 7432896) departments.push("Security Corps")
         }
 
         return departments
