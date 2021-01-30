@@ -57,7 +57,7 @@ export default class whois extends Command {
             const groupRole = await this.client.util.userMethods.getGroupRole(Number(check.robloxId), 7428213)
             if (groupRole) {
                 const groupRank = await this.client.util.userMethods.getGroupRank(Number(check.robloxId), 7428213)
-                robloxInfo += `**Clearance:** ${groupRole}\n`
+                robloxInfo += `**Clearance:** ${groupRole.slice(1,-1)}\n`
 
                 if (groupRank > 180) {
                     robloxInfo += `**Department(s):**`;
