@@ -82,6 +82,8 @@ export default class whois extends Command {
             }
             userEmbed.addField(`Roles [${member.roles.length}]:`, roleInfo)
         }
+        userEmbed.setTimestamp()
+        userEmbed.setFooter(`Foundation Management Systems`)
 
         await message.channel.createMessage({ embed: userEmbed })
     }
