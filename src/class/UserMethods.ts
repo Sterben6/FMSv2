@@ -85,10 +85,11 @@ export default class UserMethods {
         const userEmbed = new RichEmbed()
         userEmbed.setTitle(`Update:`)
         userEmbed.addField(`Nickname`, nick || "N/A");
-        userEmbed.addField(`Added Roles`, roleAddedField || "None")
-        userEmbed.addField(`Removed Roles`, roleRemovedField || "None")
+        userEmbed.addField(`Added Roles`, roleAddedField || "None");
+        userEmbed.addField(`Removed Roles`, roleRemovedField || "None");
+        userEmbed.setFooter(`Foundation Management Systems`);
+        userEmbed.setTimestamp()
         if (message) await message.channel.createMessage({ embed: userEmbed })
-
     }
 
     public async getNickname(userId) {
