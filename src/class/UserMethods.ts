@@ -155,6 +155,14 @@ export default class UserMethods {
         return rank.role.name
     }
 
+    public async getAge(userId) {
+        const joinDate = new Date((await axios.get(`https://users.roblox.com/v1/users/${userId}`)).data.created);
+        const currentTime = new Date()
+        const age = Math.round(Math.abs((joinDate.getTime() - currentTime.getTime()) / (24 * 60 * 60 * 1000)))
+
+        return age
+    }
+
     public rankToAbrev = {
         180: '[C-D]',
         190: '[C-E]',

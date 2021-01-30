@@ -41,13 +41,39 @@ export default class whois extends Command {
         userInfo += `**Display Name:** ${member.nick || member.username}\n`;
         userInfo += `**Joined Server On:** ${moment(new Date(member.joinedAt)).format('dddd, MMMM Do YYYY, h:mm:ss A')} ET\n`;
         userInfo += `**Account Created On:** ${moment(new Date(member.createdAt)).format('dddd, MMMM Do YYYY, h:mm:ss A')} ET\n`;
+
+        userEmbed.addField(`User Information:`, userInfo)
+
         const check = await this.client.db.User.findOne({ discordId: member.id })
         if (check) {
+            let robloxInfo = ""
             const data = (await axios.get(`https://users.roblox.com/v1/users/${check.robloxId}`)).data
-            userInfo += `**Roblox Username:** ${data.displayName}\n`;
-            userInfo += `**Roblox ID:** ${check.robloxId}\n`;
+            const departments: number[] = await this.client.util.userMethods.getDepartments(Number(check.robloxId));
+
+            robloxInfo += `**Roblox Username:** ${data.displayName}\n`;
+            robloxInfo += `**Roblox ID:** ${check.robloxId}\n`;
+            robloxInfo += `**Account Age:** ${await this.client.util.userMethods.getAge(check.robloxId)} days\n`;
+
+            const groupRole = await this.client.util.userMethods.getGroupRole(Number(check.robloxId), 7428213)
+            if (groupRole) {
+                const groupRank = await this.client.util.userMethods.getGroupRank(Number(check.robloxId), 7428213)
+                robloxInfo += `**Clearance:** ${groupRole}\n`
+
+                if (groupRank > 180) {
+                    robloxInfo += `**Department(s):**`;
+                    for (const dept of departments) {
+                        if (dept === 1) robloxInfo += " Ethics Committee,"
+                        else if (dept === 2) robloxInfo += " Department of External Affairs,"
+                        else if (dept === 3) robloxInfo += " Security Corps,"
+                        else if (dept === 4) robloxInfo += " Scientific Department,"
+                        else if (dept === 5) robloxInfo += " Engineering & Technical Services"
+                    }
+                    if (robloxInfo.endsWith(`,`)) robloxInfo = robloxInfo.slice(0, -1)
+                }
+            }
+
+            userEmbed.addField(`Roblox Information:`, robloxInfo)
         }
-        userEmbed.addField(`User Information:`, userInfo)
 
         if (member.roles.length > 0) {
             let roleInfo = ""
