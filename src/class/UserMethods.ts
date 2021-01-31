@@ -61,13 +61,13 @@ export default class UserMethods {
             const index = rolesToNotHave.indexOf(role.id)
             delete rolesToNotHave[index]
         }
-
         for (const role of rolesToNotHave) {
             if (member.roles.includes(role)) {
                 await member.removeRole(role)
                 rolesRemoved.push(role)
             }
         }
+
         let roleAddedField = ""
         let roleRemovedField = ""
         for (const role of rolesAdded) {
