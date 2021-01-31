@@ -173,6 +173,7 @@ export default class UserMethods {
         230: '[L-4]',
         240: '[SiD]',
         250: '[O5-#]',
+        254: '[O5-#]',
         255: '[ADM]'
     }
 

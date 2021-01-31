@@ -8,6 +8,7 @@ import {
     Application, ApplicationInterface,
     Ban, BanInterface,
     Note, NoteInterface,
+    Role, RoleInterface,
     User, UserInterface,
     Suspension, SuspensionInterface,
 } from '../models';
@@ -22,9 +23,10 @@ export default class Client extends eris.Client {
     public events: Collection<Event>;
 
     public db: {
-        Application: mongoose.Model<ApplicationInterface>
+        Application: mongoose.Model<ApplicationInterface>,
         Ban: mongoose.Model<BanInterface>,
-        Note: mongoose.Model<NoteInterface>
+        Note: mongoose.Model<NoteInterface>,
+        Role: mongoose.Model<RoleInterface>,
         User: mongoose.Model<UserInterface>,
         Suspension: mongoose.Model<SuspensionInterface>,
     }
@@ -43,6 +45,7 @@ export default class Client extends eris.Client {
             Application,
             Ban,
             Note,
+            Role,
             User,
             Suspension
         }
