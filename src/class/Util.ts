@@ -42,13 +42,23 @@ export default class Util {
      * @param search - The command you're searching for
      * @returns Promise<Command> - Returns the object of the command if found
      */
-    public resolveCommand(search: string): Promise<Command> {
-        let resolvedCommand: Command
+    public resolveCommand(search: string | string[]): Promise<Command> {
+        let resolvedCommand: Command;
         const commandQuery = this.client.commands.toArray()
-        resolvedCommand = commandQuery.find((command) => command.name === search.toLowerCase() || command.aliases.includes(search.toLowerCase()))
+        if (typeof search === 'string') search = search.split(' ')
+        resolvedCommand = commandQuery.find((command) => command.name === search[0].toLowerCase() || command.aliases.includes(search[0].toLowerCase()))
+        console.log(search)
+        if (!resolvedCommand) return Promise.resolve(null)
+        search.shift()
+        while (resolvedCommand.subcommands.size > 0 && search.length > 0) {
+            const subCommand = resolvedCommand.subcommands.toArray();
+            const found = subCommand.find((c) => c.name === search[0].toLowerCase() || c.aliases.includes(search[0].toLowerCase()))
+            if (!found) break;
+            resolvedCommand = found
+            search.shift()
+        }
 
-        if (resolvedCommand) return Promise.resolve(resolvedCommand)
-        else return Promise.resolve(null)
+        return Promise.resolve(resolvedCommand)
     }
 
     /**

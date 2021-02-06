@@ -13,7 +13,7 @@ export default class CommandHandler extends Event {
         if (message.author.bot || !message.content.startsWith(this.client.config.prefix)) return;
 
         const noPrefix: string[] = message.content.slice(this.client.config.prefix.length).trim().split(/ +/g);
-        const command = await this.client.util.resolveCommand(noPrefix.shift().toLowerCase())
+        const command = await this.client.util.resolveCommand(noPrefix)
         if (!command) return;
 
         if (command.guildOnly && (message.channel.type !== 0)) return message.channel.createMessage(`**This command may only be ran in a guild.**`);

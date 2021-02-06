@@ -67,6 +67,14 @@ export default class Client extends eris.Client {
         const cmdFiles = Object.values<typeof Command>(commandFiles);
         for (const cmd of cmdFiles) {
             const comm = new cmd(this);
+            if (comm.subcmds.length) {
+                for (const C of comm.subcmds) {
+                    const Cmd: Command = new C(this)
+                    comm.subcommands.add(Cmd.name, Cmd)
+                    this.util.signale.success(`Loaded sub-command ${comm.name} ${Cmd.name}`)
+                }
+            }
+            delete comm.subcmds;
             this.commands.add(comm.name, comm);
             this.util.signale.success(`Loaded ${comm.name} command.`)
         }
