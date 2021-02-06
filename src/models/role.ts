@@ -8,9 +8,10 @@ export interface RoleInterface extends Document {
 }
 
 const Role: Schema = new Schema({
-    userId: String,
-    text: String,
-    issuerId: String,
+    key: String,
+    roleId: String,
+    permission: Number,
+    description: String,
 })
 
 export default model<RoleInterface>('Roles', Role)
