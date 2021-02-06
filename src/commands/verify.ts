@@ -19,7 +19,6 @@ export default class verify extends Command {
         if (check) {
             const name = (await axios.get(`https://users.roblox.com/v1/users/${check.robloxId}`)).data.displayName;
             await channel.createMessage(`You are already verified to \`${name}\`.`)
-            await message.delete()
             return
         }
         let messages: Collection<Message> = new Collection<Message>()
@@ -146,6 +145,8 @@ export default class verify extends Command {
             await channel.createMessage(`Verification failed.\nPlease try again.`)
         }
 
+        await this.client.util.userMethods.update(message.member, message)
+
         messages.forEach((m) => {
             m.delete(`Command`)
         })
@@ -158,9 +159,9 @@ export default class verify extends Command {
         const status = res2.data.status;
 
         if (desc.includes(code)) return true
-        if (status.includes(code)) return true
+        return !!status.includes(code);
 
-        return false
+
     }
 
     public whitelistedWords = [
