@@ -1,4 +1,4 @@
-import { Client, Command, RichEmbed, Collection } from '../class';
+import { Client, Command, RichEmbed } from '../class';
 import { Message, Member } from 'eris';
 import axios from 'axios';
 import moment from 'moment';
@@ -66,7 +66,7 @@ export default class whois extends Command {
                         else if (dept === 2) robloxInfo += " Department of External Affairs,"
                         else if (dept === 3) robloxInfo += " Security Corps,"
                         else if (dept === 4) robloxInfo += " Scientific Department,"
-                        else if (dept === 5) robloxInfo += " Engineering & Technical Services"
+                        else if (dept === 5) robloxInfo += " Engineering & Technical Services,"
                     }
                     if (robloxInfo.endsWith(`,`)) robloxInfo = robloxInfo.slice(0, -1)
                 }
