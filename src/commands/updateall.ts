@@ -16,6 +16,7 @@ export default class updateall extends Command {
         const guildMembers = message.guild.members;
         for (const member in guildMembers) {
             await this.client.util.userMethods.update(message.guild.members.get(member))
+
         }
 
         await message.channel.createMessage(`Updated all users in the server.`)

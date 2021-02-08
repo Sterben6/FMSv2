@@ -1,5 +1,5 @@
-import { Client, Command, RichEmbed, Collection } from '../class';
-import { Message, Member } from 'eris';
+import { Client, Command } from '../class';
+import { Message } from 'eris';
 
 export default class rank extends Command {
     constructor(client: Client) {
