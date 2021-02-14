@@ -9,7 +9,7 @@ export default class suspend extends Command {
         this.description = 'Ranks a user Class-E in the group and changes their roles.';
         this.usage = 'suspend [username] [length (optional)] [reason]';
         this.permissions = 2;
-        this.enabled = true;
+        this.enabled = false;
     }
 
     public async run(message: Message, args: string[]) {
