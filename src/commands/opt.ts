@@ -31,7 +31,7 @@ export default class opt extends Command {
             await message.channel.createMessage({ embed });
             return;
         }
-        const role = await this.client.db.Role.find({key: args[0]});
+        const role = await this.client.db.Role.findOne({key: args[0]});
         if (!role) {
             return message.channel.createMessage(`No role with that name was found.`)
         }
@@ -39,6 +39,7 @@ export default class opt extends Command {
             await message.member.addRole(role.roleId)
             return message.channel.createMessage(`Added ${role.key} to your roles.`)
         } catch (err) {
+            this.client.util.signale.error(err)
             return message.channel.createMessage(`An error occurred while attempting to add the role. Please try again and if the error persists, contact the developer.`)
         }
     }
