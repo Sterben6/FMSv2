@@ -53,7 +53,7 @@ export default class UserMethods {
         const groupRank = await this.getGroupRank(Number(userInfo.robloxId), 7428213);
         if (groupRank) rolesToHave.push(member.guild.roles.get(this.client.util.rankMaps.numToRoleId[groupRank]));
 
-        for (const role of rolesToHave) {
+        for (let role of rolesToHave) {
             if (!(member.roles.includes(role.id))) {
                 await member.addRole(role.id)
                 rolesAdded.push(role.id)
@@ -61,7 +61,8 @@ export default class UserMethods {
             const index = rolesToNotHave.indexOf(role.id)
             delete rolesToNotHave[index]
         }
-        for (const role of rolesToNotHave) {
+
+        for (let role of rolesToNotHave) {
             if (member.roles.includes(role)) {
                 await member.removeRole(role)
                 rolesRemoved.push(role)
