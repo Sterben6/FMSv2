@@ -101,6 +101,9 @@ export default class UserMethods {
             return ""
         }
 
+        if (!this.rankToAbrev[userRank]) {
+            return await noblox.getUsernameFromId(userId);
+        }
 
         let nickName = `${this.rankToAbrev[userRank]} ${await noblox.getUsernameFromId(userId)}`
 
