@@ -116,11 +116,11 @@ export default class UserMethods {
             const departments = await this.getDepartments(userId);
             for (const dept of departments) {
 
-                if (dept === 6 || dept ===7) {
-                    continue;
-                }
+                console.log(dept)
 
                 const deptRole = await this.getGroupRole(userId, this.deptToId[dept])
+
+                console.log(deptRole)
 
                 if (deptRole === "[Overseer]") {
                     nickName = nickName.replace('#', String(dept))
@@ -195,7 +195,7 @@ export default class UserMethods {
         2: 7759188,
         3: 7432896,
         4: 7433003,
-        5: 9763859,
+        5: 7759494,
     }
 
     public globalRoleList = [
