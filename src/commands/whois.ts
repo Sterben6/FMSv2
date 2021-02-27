@@ -67,6 +67,8 @@ export default class whois extends Command {
                         else if (dept === 3) robloxInfo += " Security Corps,"
                         else if (dept === 4) robloxInfo += " Scientific Department,"
                         else if (dept === 5) robloxInfo += " Engineering & Technical Services,"
+                        else if (dept === 6) robloxInfo += " Department of Discoveries,"
+                        else if (dept === 7) robloxInfo += " Medical Department,"
                     }
                     if (robloxInfo.endsWith(`,`)) robloxInfo = robloxInfo.slice(0, -1)
                 }

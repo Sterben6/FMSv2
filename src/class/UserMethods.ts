@@ -30,7 +30,6 @@ export default class UserMethods {
                     await member.removeRole(role)
                 }
             }
-
             return;
         }
 
@@ -41,6 +40,8 @@ export default class UserMethods {
             else if (dept === 2) rolesToHave.push(member.guild.roles.get(`754058117544935474`));
             else if (dept === 4) rolesToHave.push(member.guild.roles.get(`754058149287297154`));
             else if (dept === 3) rolesToHave.push(member.guild.roles.get(`754058039635607573`));
+            else if (dept === 6) rolesToHave.push(member.guild.roles.get(`814989730093072407`));
+            else if (dept === 7) rolesToHave.push(member.guild.roles.get(`814989681296015380`));
         }
 
         const nick = await this.getNickname(Number(userInfo.robloxId));
@@ -62,8 +63,11 @@ export default class UserMethods {
             delete rolesToNotHave[index]
         }
 
+        console.log(`removing roles...`)
+
         for (const role of rolesToNotHave) {
             if (member.roles.includes(role)) {
+                console.log(`removed role ${role}`)
                 await member.removeRole(role)
                 rolesRemoved.push(role)
             }
@@ -135,6 +139,8 @@ export default class UserMethods {
             else if (group.group.id === 7759188) departments.push(2)
             else if (group.group.id === 7433003) departments.push(4)
             else if (group.group.id === 7432896) departments.push(3)
+            else if (group.group.id === 9763859) departments.push(6)
+            else if (group.group.id === 7432896) departments.push(7)
         }
 
         return departments
@@ -163,9 +169,7 @@ export default class UserMethods {
     public async getAge(userId) {
         const joinDate = new Date((await axios.get(`https://users.roblox.com/v1/users/${userId}`)).data.created);
         const currentTime = new Date()
-        const age = Math.round(Math.abs((joinDate.getTime() - currentTime.getTime()) / (24 * 60 * 60 * 1000)))
-
-        return age
+        return Math.round(Math.abs((joinDate.getTime() - currentTime.getTime()) / (24 * 60 * 60 * 1000)))
     }
 
     public rankToAbrev = {
@@ -183,14 +187,16 @@ export default class UserMethods {
 
     public deptToId = {
         1: 8211500,
-        5: 7759494,
         2: 7759188,
-        4: 7433003,
         3: 7432896,
+        4: 7433003,
+        5: 9763859,
     }
 
     public globalRoleList = [
         `754058117544935474`, // DEA
+        `814989730093072407`, // DoD
+        `814989681296015380`, // MD
         `754058149287297154`, // ScD
         `754058039635607573`, // SC
         `754058074830143499`, // EC
