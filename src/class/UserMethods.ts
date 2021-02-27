@@ -115,6 +115,11 @@ export default class UserMethods {
         if (userRank >= 250) {
             const departments = await this.getDepartments(userId);
             for (const dept of departments) {
+
+                if (dept === 6 || dept ===7) {
+                    continue;
+                }
+
                 const deptRole = await this.getGroupRole(userId, this.deptToId[dept])
 
                 if (deptRole === "[Overseer]") {
@@ -140,7 +145,7 @@ export default class UserMethods {
             else if (group.group.id === 7433003) departments.push(4)
             else if (group.group.id === 7432896) departments.push(3)
             else if (group.group.id === 9763859) departments.push(6)
-            else if (group.group.id === 7432896) departments.push(7)
+            else if (group.group.id === 9764274) departments.push(7)
         }
 
         return departments
