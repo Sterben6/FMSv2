@@ -66,6 +66,8 @@ export default class UserMethods {
         console.log(`removing roles...`)
 
         for (const role of rolesToNotHave) {
+            console.log(role)
+            console.log(member.roles)
             if (member.roles.includes(role)) {
                 console.log(`removed role ${role}`)
                 await member.removeRole(role)
@@ -102,7 +104,7 @@ export default class UserMethods {
         try {
             userRank = await this.getGroupRank(userId, 7428213)
         } catch (error) {
-            return ""
+            return;
         }
 
         if (!this.rankToAbrev[userRank]) {
@@ -110,7 +112,6 @@ export default class UserMethods {
         }
 
         let nickName = `${this.rankToAbrev[userRank]} ${await noblox.getUsernameFromId(userId)}`
-
 
         if (userRank >= 250) {
             const departments = await this.getDepartments(userId);
@@ -128,9 +129,7 @@ export default class UserMethods {
                 }
             }
         }
-
         return nickName
-
     }
 
     public async getDepartments(userId) {
