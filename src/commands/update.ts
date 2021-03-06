@@ -15,7 +15,7 @@ export default class update extends Command {
     public async run(message: Message, args: string[]) {
         const channel = message.channel;
         let member: Member;
-        if (!args[0]) member = message.member
+        if (!args[0]) member = await message.guild.getRESTMember(message.member.id)
         else if (this.checkPermissions(message.member, 2)){
             member = this.client.util.resolveMember(args.join(' '), message.guild)
             try {
@@ -24,7 +24,7 @@ export default class update extends Command {
                 return message.channel.createMessage(`User wasn't found.`)
             }
         } else {
-            member = message.member
+            member = await message.guild.getRESTMember(message.member.id)
         }
 
         const check = await this.client.db.User.findOne({ discordId: message.member.id });
