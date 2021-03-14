@@ -66,12 +66,11 @@ export default class UserMethods {
         console.log(`removing roles...`)
 
         rolesToNotHave = rolesToNotHave.filter(Boolean)
+        console.log(rolesToNotHave)
+        console.log(member.roles)
 
         for (const role of rolesToNotHave) {
-            console.log(role)
-            console.log(member.roles)
             if (member.roles.includes(role)) {
-                console.log(`removed role ${role}`)
                 await member.removeRole(role)
                 rolesRemoved.push(role)
             }
