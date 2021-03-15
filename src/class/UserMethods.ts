@@ -61,6 +61,7 @@ export default class UserMethods {
             }
             const index = rolesToNotHave.indexOf(role.id)
             delete rolesToNotHave[index]
+            console.log(role.id)
         }
 
         console.log(`removing roles...`)
